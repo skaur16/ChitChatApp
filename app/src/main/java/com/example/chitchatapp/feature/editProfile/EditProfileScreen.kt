@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
-    email : String
+    email: String
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -36,9 +36,9 @@ fun EditProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text="Profile")},
+                title = { Text(text = "Profile") },
                 navigationIcon = {}
-                )
+            )
         },
         snackbarHost = {
             SnackbarHost(
@@ -48,13 +48,16 @@ fun EditProfileScreen(
             )
         }
 
-    ) {paddingValues->
+    ) { paddingValues ->
 
-        var name by remember{ mutableStateOf("") }
-        var bio by remember{ mutableStateOf("") }
+        var name by remember { mutableStateOf("") }
+        var nameError by remember { mutableStateOf(false) }
+        var bio by remember { mutableStateOf("") }
+        var bioError by remember { mutableStateOf(false) }
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
@@ -63,8 +66,14 @@ fun EditProfileScreen(
             OutlinedTextField(
                 modifier = Modifier.fillMaxSize(),
                 value = name,
-                onValueChange = {name = it},
-                label = { Text(text = "Name")}
+                onValueChange = { name = it
+                                nameError = it.isBlank()
+                                },
+                label = { Text(text = "Name") },
+                isError = nameError,
+                supportingText = if(nameError) {
+                    { Text(text = "Required!") }
+                } else null
             )
 
             OutlinedTextField(
@@ -72,39 +81,61 @@ fun EditProfileScreen(
                 value = email,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text(text = "Email")}
+                label = { Text(text = "Email") }
             )
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxSize(),
                 value = bio,
-                onValueChange = {bio = it},
-                label = { Text(text = "Bio")}
+                onValueChange = { bio = it
+                    bioError = it.isBlank()},
+                label = { Text(text = "Bio") },
+                isError = bioError,
+                supportingText = if(bioError) {
+                    { Text(text = "Required!") }
+                } else null
             )
 
             val scope = rememberCoroutineScope()
 
             Button(
-                modifier = Modifier.padding(top = 12.dp)
+                modifier = Modifier
+                    .padding(top = 12.dp)
                     .align(Alignment.CenterHorizontally),
                 onClick = {
-                    if(name.isNotBlank() && bio.isNotBlank()){
-
+                    if(name.isBlank() && bio.isBlank()){
+                        nameError = true
+                        bioError = true
                         scope.launch {
-                         snackbarHostState.showSnackbar("Your name is $name and bio is $bio")
+                            snackbarHostState.showSnackbar("Please input your Name and Bio")
                         }
+                        return@Button
+                    }
+                    if (name.isBlank()) {
+                        nameError = true
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Please input your Name")
+                        }
+                        return@Button
+                    }
 
-                    }
-                    else{
-                        scope.launch{
-                            snackbarHostState.showSnackbar("Please input your Name and Bio!")
+                    if (bio.isBlank()) {
+                        bioError = true
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Please input your Bio")
+                        }
+                        return@Button
+                    } else {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Your name is $name and bio is $bio")
                         }
                     }
+
                 }
             ) {
-                Text(text = "Save")
-            }
+                    Text(text = "Save")
+                }
+                }
         }
-    }
 
-}
+    }
