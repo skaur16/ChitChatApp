@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.chitchatapp.domain.models.Gender
+import com.example.chitchatapp.feature.editProfile.comp.RadioButton
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,6 +56,7 @@ fun EditProfileScreen(
         var nameError by remember { mutableStateOf(false) }
         var bio by remember { mutableStateOf("") }
         var bioError by remember { mutableStateOf(false) }
+        val gender = remember { mutableStateOf<String?>(null) }
 
         Column(
             modifier = Modifier
@@ -95,6 +98,11 @@ fun EditProfileScreen(
                     { Text(text = "Required!") }
                 } else null
             )
+
+          //radiogroup not working from droidlibs
+
+            RadioButton()
+
 
             val scope = rememberCoroutineScope()
 
