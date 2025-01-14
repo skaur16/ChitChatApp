@@ -41,6 +41,12 @@ android {
         compose = true
     }
 }
+//droidlibs
+configurations {
+    "implementation" {
+        exclude("org.jetbrains.compose.material", "material-desktop")
+    }
+}
 
 dependencies {
 
@@ -71,5 +77,5 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     //droidlibs
-    //implementation("com.github.The-Streamliners.DroidLibs:compose-android:1.2.18")
+    implementation("com.github.The-Streamliners.DroidLibs:compose-android:1.2.18")
 }

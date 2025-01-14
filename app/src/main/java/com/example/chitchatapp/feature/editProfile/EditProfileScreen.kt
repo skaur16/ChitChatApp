@@ -23,8 +23,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.chitchatapp.domain.models.Gender
 import com.example.chitchatapp.feature.editProfile.comp.RadioButton
+import com.streamliners.compose.comp.textInput.TextInputLayout
+import com.streamliners.compose.comp.textInput.config.InputConfig
+import com.streamliners.compose.comp.textInput.config.text
+import com.streamliners.compose.comp.textInput.state.TextInputState
+import com.streamliners.compose.comp.textInput.state.allHaveValidInputs
+
+
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,11 +58,35 @@ fun EditProfileScreen(
 
     ) { paddingValues ->
 
-        var name by remember { mutableStateOf("") }
-        var nameError by remember { mutableStateOf(false) }
-        var bio by remember { mutableStateOf("") }
-        var bioError by remember { mutableStateOf(false) }
+//        var name by remember { mutableStateOf("") }
+//        var nameError by remember { mutableStateOf(false) }
+//        var bio by remember { mutableStateOf("") }
+//        var bioError by remember { mutableStateOf(false) }
         val gender = remember { mutableStateOf<String?>(null) }
+
+        val nameInput = remember {
+            mutableStateOf(
+                TextInputState(
+                    label = "Name",
+                    inputConfig = InputConfig.text {
+                        minLength = 5
+                        maxLength = 30
+                    }
+                )
+            )
+        }
+
+        val bioInput = remember {
+            mutableStateOf(
+                TextInputState(
+                    label = "Bio",
+                    inputConfig = InputConfig.text {
+                        minLength = 10
+                        maxLength = 50
+                    }
+                )
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -66,40 +96,12 @@ fun EditProfileScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxSize(),
-                value = name,
-                onValueChange = { name = it
-                                nameError = it.isBlank()
-                                },
-                label = { Text(text = "Name") },
-                isError = nameError,
-                supportingText = if(nameError) {
-                    { Text(text = "Required!") }
-                } else null
-            )
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxSize(),
-                value = email,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text(text = "Email") }
-            )
+            TextInputLayout(state = nameInput)
+            TextInputLayout(state = bioInput)
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxSize(),
-                value = bio,
-                onValueChange = { bio = it
-                    bioError = it.isBlank()},
-                label = { Text(text = "Bio") },
-                isError = bioError,
-                supportingText = if(bioError) {
-                    { Text(text = "Required!") }
-                } else null
-            )
 
-          //radiogroup not working from droidlibs
+            //radiogroup not working from droidlibs
 
             RadioButton()
 
@@ -111,39 +113,23 @@ fun EditProfileScreen(
                     .padding(top = 12.dp)
                     .align(Alignment.CenterHorizontally),
                 onClick = {
-                    if(name.isBlank() && bio.isBlank()){
-                        nameError = true
-                        bioError = true
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Please input your Name and Bio")
-                        }
-                        return@Button
-                    }
-                    if (name.isBlank()) {
-                        nameError = true
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Please input your Name")
-                        }
-                        return@Button
-                    }
+                    if (TextInputState.allHaveValidInputs(
+                            nameInput, bioInput
+                        )
+                    ) {
 
-                    if (bio.isBlank()) {
-                        bioError = true
                         scope.launch {
-                            snackbarHostState.showSnackbar("Please input your Bio")
+                            snackbarHostState.showSnackbar("Your name is ${nameInput.value.value} " +
+                                    "and bio is ${bioInput.value.value}")
                         }
-                        return@Button
-                    } else {
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Your name is $name and bio is $bio")
-                        }
-                    }
 
+                    }
                 }
             ) {
-                    Text(text = "Save")
-                }
-                }
+                Text(text = "Save")
+            }
+
         }
 
     }
+}
