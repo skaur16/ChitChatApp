@@ -3,6 +3,7 @@ package com.example.chitchatapp.feature.editProfile
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,12 +24,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.chitchatapp.domain.models.User
 import com.example.chitchatapp.feature.editProfile.comp.RadioButton
 import com.streamliners.compose.comp.textInput.TextInputLayout
 import com.streamliners.compose.comp.textInput.config.InputConfig
 import com.streamliners.compose.comp.textInput.config.text
 import com.streamliners.compose.comp.textInput.state.TextInputState
 import com.streamliners.compose.comp.textInput.state.allHaveValidInputs
+import com.streamliners.compose.comp.textInput.state.value
 
 
 import kotlinx.coroutines.launch
@@ -36,6 +39,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
+    viewModel: EditProfileViewModel,
     email: String
 ) {
 
@@ -98,6 +102,15 @@ fun EditProfileScreen(
         ) {
 
             TextInputLayout(state = nameInput)
+
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = email,
+                onValueChange = {},
+                readOnly = true,
+                label = {Text(text = "Email")}
+            )
+
             TextInputLayout(state = bioInput)
 
 
@@ -117,13 +130,21 @@ fun EditProfileScreen(
                             nameInput, bioInput
                         )
                     ) {
+                        gender.value?.let {
 
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Your name is ${nameInput.value.value} " +
-                                    "and bio is ${bioInput.value.value}")
+                            val user = User(
+                                name = nameInput.value.value,
+                                email = email,
+                                bio = bioInput.value.value,
+                                gender = it
+
+                            )
+
+                            viewModel.saveUser(user)
                         }
 
                     }
+
                 }
             ) {
                 Text(text = "Save")
