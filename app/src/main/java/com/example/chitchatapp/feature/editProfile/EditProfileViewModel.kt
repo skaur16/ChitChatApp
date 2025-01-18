@@ -9,9 +9,10 @@ import kotlinx.coroutines.launch
 class EditProfileViewModel : ViewModel() {
 
 
-    fun saveUser(user : User){
+    fun saveUser(user : User, onSuccess: () -> Unit){
         viewModelScope.launch {
             UserRepo().saveUser(user)
+            onSuccess()
         }
     }
 }

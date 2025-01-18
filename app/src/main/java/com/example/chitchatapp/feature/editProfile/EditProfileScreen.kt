@@ -108,7 +108,7 @@ fun EditProfileScreen(
                 value = email,
                 onValueChange = {},
                 readOnly = true,
-                label = {Text(text = "Email")}
+                label = { Text(text = "Email") }
             )
 
             TextInputLayout(state = bioInput)
@@ -140,11 +140,13 @@ fun EditProfileScreen(
 
                             )
 
-                            viewModel.saveUser(user)
+                            viewModel.saveUser(user) {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Registration Successful")
+                                }
+                            }
                         }
-
                     }
-
                 }
             ) {
                 Text(text = "Save")
