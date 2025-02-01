@@ -32,7 +32,7 @@ fun LoginScreen(
             topBar = {
                     TopAppBar(
                         title = {
-                            Text("Welcome to ChitChat")
+                            Text("Welcome ")
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Secondary,
@@ -56,6 +56,8 @@ fun LoginScreen(
                 onError = {exception->
                     Toast.makeText(context, "Error caused :${exception?.message}", Toast.LENGTH_SHORT).show()
                 })
+
+
         }
     }
     

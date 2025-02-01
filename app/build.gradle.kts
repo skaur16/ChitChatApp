@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.media3.common.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,16 +68,18 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    implementation("com.google.firebase:firebase-analytics")
-
-    implementation("com.firebaseui:firebase-ui-auth:7.2.0")
+    implementation(libs.firebase.analytics)             //firebase
+    //firestore dependencies
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.google.firebase.firestore)
+    //firebase-auth
+    implementation(libs.firebase.ui.auth)
     //navigation
-    val nav_version = "2.8.5"
-
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-
+    implementation(libs.androidx.navigation.compose)
     //droidlibs
-    implementation("com.github.The-Streamliners.DroidLibs:compose-android:1.2.18")
+    implementation(libs.compose.android)
+    //datastore
+    implementation(libs.androidx.datastore.preferences.core)
+
+
 }

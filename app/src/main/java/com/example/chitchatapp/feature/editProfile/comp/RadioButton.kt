@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun RadioButton() {
+fun RadioButton(
+    onGenderClick:(String)->Unit
+) {
     val options = listOf("Male","Female")
     var selectedOption by remember {
         mutableStateOf(options[0])
@@ -48,6 +50,7 @@ fun RadioButton() {
                         selected = selectedOption == option,
                         onClick = {
                             selectedOption = option
+                            onGenderClick(selectedOption)
                         }
                     )
                     Text(text = option)
