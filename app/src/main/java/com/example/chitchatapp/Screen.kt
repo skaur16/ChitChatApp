@@ -9,6 +9,10 @@ sealed class Screen(
 
     data object LOGIN : Screen("LOGIN")
 
+    data object HOME : Screen("HOME")
+
+
+
     class EDITPROFILE(
         val email : String
     ) : Screen("EDITPROFILE?email=$email"){

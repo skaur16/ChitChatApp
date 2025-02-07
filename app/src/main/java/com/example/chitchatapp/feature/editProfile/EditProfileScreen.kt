@@ -31,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.chitchatapp.Screen
 import com.example.chitchatapp.domain.models.Gender
 import com.example.chitchatapp.domain.models.User
 import com.streamliners.compose.comp.select.RadioGroup
@@ -48,6 +50,7 @@ import org.checkerframework.checker.units.qual.Length
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
+    navController: NavController,
     viewModel: EditProfileViewModel,
     email: String
 ) {
@@ -175,9 +178,7 @@ fun EditProfileScreen(
 
 
                             viewModel.saveUser(user) {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("Registration Successful")
-                                }
+                                navController.navigate(Screen.HOME.route)
                             }
                             Log.e("TAG3", "SAVE BUTTON")
 

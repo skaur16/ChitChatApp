@@ -80,6 +80,14 @@ dependencies {
     implementation(libs.compose.android)
     //datastore
     implementation(libs.androidx.datastore.preferences.core)
+    //gson
+    implementation(libs.gson)
+    //dependency injection- koin
+    implementation(libs.koin.android)
+    //koin compose
+    implementation(libs.koin.androidx.compose)
+
+    implementation("androidx.navigation:navigation-compose:2.8.5")
 
 
 }

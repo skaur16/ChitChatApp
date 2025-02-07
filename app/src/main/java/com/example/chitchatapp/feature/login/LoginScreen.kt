@@ -25,14 +25,15 @@ import com.example.chitchatapp.ui.theme.Secondary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel
                 )
 {
     Scaffold (
             topBar = {
                     TopAppBar(
                         title = {
-                            Text("Welcome ")
+                            Text("Welcome  ")
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Secondary,
@@ -50,8 +51,8 @@ fun LoginScreen(
             SignInWithGoogleButton(
                 onSuccess = {user->
                     val email = user.email ?: error("Email not found!")
-                    Toast.makeText(context, "Signed In as $email", Toast.LENGTH_SHORT).show()
-                    navController.navigate(Screen.EDITPROFILE(email).route)
+                    viewModel.onLoggedIn(email, navController)
+                    Toast.makeText(context, "Signed in as ${email}", Toast.LENGTH_SHORT).show()
                 },
                 onError = {exception->
                     Toast.makeText(context, "Error caused :${exception?.message}", Toast.LENGTH_SHORT).show()
