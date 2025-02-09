@@ -8,5 +8,4 @@ data class User(
     val gender : Gender
 ) {
     constructor() : this(null, "","","",Gender.Male)
-
 }
