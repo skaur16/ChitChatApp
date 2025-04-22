@@ -175,11 +175,17 @@ fun EditProfileScreen(
                         .size(128.dp)
                         .clip(CircleShape)
                         .clickable { launcher.launch("image/*") }
+                        .align(
+                            alignment = Alignment.CenterHorizontally
+                        )
                 )
             } else {
-                AddImageButton{
-                    launcher.launch("image/*")
-                }
+                AddImageButton(
+                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                    onClick = {
+                        launcher.launch("image/*")
+                    }
+                )
             }
 
             TextInputLayout(state = nameInput)

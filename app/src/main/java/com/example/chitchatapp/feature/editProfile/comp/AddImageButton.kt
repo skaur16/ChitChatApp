@@ -23,14 +23,16 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AddImageButton(
+    modifier : Modifier,
     onClick: () -> Unit
 ) {
     Column (
-        modifier = Modifier.clip(CircleShape)
+        modifier = modifier.clip(CircleShape)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .size(100.dp)
             .padding(12.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
