@@ -1,15 +1,22 @@
 package com.example.chitchatapp.feature.editProfile
 
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,20 +35,31 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.chitchatapp.Screen
 import com.example.chitchatapp.domain.models.Gender
 import com.example.chitchatapp.domain.models.User
+import com.example.chitchatapp.feature.editProfile.comp.AddImageButton
+import com.example.chitchatapp.feature.editProfile.comp.ProfileImage
 import com.streamliners.compose.comp.select.RadioGroup
 import com.streamliners.compose.comp.textInput.TextInputLayout
 import com.streamliners.compose.comp.textInput.config.InputConfig
 import com.streamliners.compose.comp.textInput.config.text
+import com.streamliners.compose.comp.textInput.dialog.TextInputDialogState
 import com.streamliners.compose.comp.textInput.state.TextInputState
 import com.streamliners.compose.comp.textInput.state.allHaveValidInputs
-
+import com.streamliners.pickers.media.MediaPickerDialog
+import com.streamliners.pickers.media.MediaPickerDialogState
+import com.streamliners.pickers.media.MediaType
+import com.streamliners.pickers.media.PickedMedia
+import com.streamliners.pickers.media.rememberMediaPickerDialogState
 
 
 import kotlinx.coroutines.launch
@@ -55,6 +73,8 @@ fun EditProfileScreen(
     email: String
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val mediaPickerDialogState = rememberMediaPickerDialogState()
+
 
     val gender = remember { mutableStateOf<Gender?>(null) }
     var genderError by remember { mutableStateOf(false) }
@@ -92,7 +112,15 @@ fun EditProfileScreen(
 //        var nameError by remember { mutableStateOf(false) }
 //        var bio by remember { mutableStateOf("") }
 //        var bioError by remember { mutableStateOf(false) }
+        val image = remember{
+            mutableStateOf<PickedMedia?>(null)
+        }
 
+        var imageUri = remember{ mutableStateOf<Uri?>(null) }
+        val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+            uri->
+            imageUri.value = uri
+        }
 
 
 
@@ -128,6 +156,31 @@ fun EditProfileScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+
+           /* image.value?.let{
+                ProfileImage(it)
+            }?: run{
+                AddImageButton{
+
+            }*/
+            if (imageUri.value != null) {
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        ImageRequest.Builder(context)
+                            .data(imageUri.value)
+                            .build()
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(128.dp)
+                        .clip(CircleShape)
+                        .clickable { launcher.launch("image/*") }
+                )
+            } else {
+                AddImageButton{
+                    launcher.launch("image/*")
+                }
+            }
 
             TextInputLayout(state = nameInput)
 
@@ -197,4 +250,6 @@ fun EditProfileScreen(
         }
 
     }
+    MediaPickerDialog(state = mediaPickerDialogState,
+        authority = "com.example.chitchat app.FileProvider")
 }

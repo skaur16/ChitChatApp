@@ -16,12 +16,12 @@ class SplashViewModel @Inject constructor(
             navController: NavController
         ){
             viewModelScope.launch {
-                if(localRepo.isLoggedIn()){
+                /*if(localRepo.isLoggedIn()){
                     navController.navigate(Screen.HOME.route)
                 }
-                else{
+                else{*/
                     navController.navigate(Screen.LOGIN.route)
-                }
+               // }
             }
         }
 

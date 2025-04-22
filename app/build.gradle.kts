@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     //droidlibs
     implementation(libs.compose.android)
+    implementation(libs.droidlibs.pickers)
     //datastore
     implementation(libs.androidx.datastore.preferences.core)
     //gson
@@ -86,8 +87,11 @@ dependencies {
     implementation(libs.koin.android)
     //koin compose
     implementation(libs.koin.androidx.compose)
-
-    implementation("androidx.navigation:navigation-compose:2.8.5")
-
+    //navigation
+    implementation(libs.androidx.navigation.compose)
+    //extended icons
+    implementation(libs.androidx.material.icons.extended)
+    //coil imagepicker
+    implementation(libs.coil.compose)
 
 }

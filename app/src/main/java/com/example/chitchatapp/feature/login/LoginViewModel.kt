@@ -23,7 +23,8 @@ class LoginViewModel @Inject constructor(
             if(user != null){
                 //save data in local and navigate
                 localRepo.onLoggedIn()
-                navController.navigate(Screen.HOME.route)
+               // navController.navigate(Screen.HOME.route)
+                navController.navigate(Screen.EDITPROFILE(email).route)
             }
             else{
                 //navigate to editProfile Screen
