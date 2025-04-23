@@ -5,9 +5,10 @@ data class User(
     val name : String,
     val email : String,
     val bio : String,
-    val gender : Gender
+    val gender : Gender,
+    val dob : String? = null
 ) {
-    constructor() : this(null, "","","",Gender.Male)
+    constructor() : this(null, "","","",Gender.Male,null)
 
 
 

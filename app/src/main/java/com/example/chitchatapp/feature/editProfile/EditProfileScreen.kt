@@ -26,6 +26,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,6 +49,7 @@ import com.example.chitchatapp.domain.models.Gender
 import com.example.chitchatapp.domain.models.User
 import com.example.chitchatapp.feature.editProfile.comp.AddImageButton
 import com.example.chitchatapp.feature.editProfile.comp.ProfileImage
+import com.example.chitchatapp.ui.theme.Secondary
 import com.streamliners.compose.comp.select.RadioGroup
 import com.streamliners.compose.comp.textInput.TextInputLayout
 import com.streamliners.compose.comp.textInput.config.InputConfig
@@ -55,11 +57,14 @@ import com.streamliners.compose.comp.textInput.config.text
 import com.streamliners.compose.comp.textInput.dialog.TextInputDialogState
 import com.streamliners.compose.comp.textInput.state.TextInputState
 import com.streamliners.compose.comp.textInput.state.allHaveValidInputs
+import com.streamliners.pickers.date.DatePickerDialog
+import com.streamliners.pickers.date.ShowDatePicker
 import com.streamliners.pickers.media.MediaPickerDialog
 import com.streamliners.pickers.media.MediaPickerDialogState
 import com.streamliners.pickers.media.MediaType
 import com.streamliners.pickers.media.PickedMedia
 import com.streamliners.pickers.media.rememberMediaPickerDialogState
+import com.streamliners.utils.DateTimeUtils
 
 
 import kotlinx.coroutines.launch
@@ -70,7 +75,8 @@ import org.checkerframework.checker.units.qual.Length
 fun EditProfileScreen(
     navController: NavController,
     viewModel: EditProfileViewModel,
-    email: String
+    email: String,
+    showDatePicker: ShowDatePicker
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val mediaPickerDialogState = rememberMediaPickerDialogState()
@@ -78,6 +84,7 @@ fun EditProfileScreen(
 
     val gender = remember { mutableStateOf<Gender?>(null) }
     var genderError by remember { mutableStateOf(false) }
+    var dob by remember { mutableStateOf<String?>(null) }
     val context = LocalContext.current
 
     LaunchedEffect(key1 = gender.value) {
@@ -94,7 +101,10 @@ fun EditProfileScreen(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Profile") },
-                navigationIcon = {}
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Secondary,
+                    titleContentColor = Color.White
+                )
             )
         },
         snackbarHost = {
@@ -211,6 +221,26 @@ fun EditProfileScreen(
                 Text(text="Required")
             }
 
+            //DOB datepicker..
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth()
+                    .clickable {
+                        showDatePicker(
+                            DatePickerDialog.Params(
+                                format = DateTimeUtils.Format.DATE_MONTH_YEAR_2,
+                                prefill = dob,
+                                onPicked = {date->
+                                    dob = date
+                                }
+                            )
+                        )
+                    },
+                value = dob?: "",
+                onValueChange = {},
+                enabled = false,
+                label = { Text(text = "DOB") }
+            )
+
             val scope = rememberCoroutineScope()
 
             Button(
@@ -230,8 +260,8 @@ fun EditProfileScreen(
                                 name = nameInput.value.value,
                                 email = email,
                                 bio = bioInput.value.value,
-                                gender = it
-
+                                gender = it,
+                                dob = dob
                             )
                             Log.e("TAG2", "BEFORE CALL")
 

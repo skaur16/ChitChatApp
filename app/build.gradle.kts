@@ -39,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 //droidlibs
@@ -79,6 +80,8 @@ dependencies {
     //droidlibs
     implementation(libs.compose.android)
     implementation(libs.droidlibs.pickers)
+    implementation(libs.droidlibs.base)
+    implementation(libs.droidlibs.utils)
     //datastore
     implementation(libs.androidx.datastore.preferences.core)
     //gson

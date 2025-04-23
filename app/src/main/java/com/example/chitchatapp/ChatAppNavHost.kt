@@ -14,11 +14,12 @@ import com.example.chitchatapp.feature.login.LoginScreen
 import com.example.chitchatapp.feature.login.LoginViewModel
 import com.example.chitchatapp.feature.splash.SplashScreen
 import com.example.chitchatapp.feature.splash.SplashViewModel
+import com.streamliners.pickers.date.showDatePickerDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.factory.KoinViewModelFactory
 
 @Composable
-fun ChatAppNavHost() {
+fun MainActivity.ChatAppNavHost() {
 
     val navController = rememberNavController()
 
@@ -45,7 +46,12 @@ fun ChatAppNavHost() {
             ) {
 
             val email = it.arguments?.getString("email")?: error("Email not passed !")
-            EditProfileScreen(navController,koinViewModel(),email)
+            EditProfileScreen(
+                navController,
+                koinViewModel(),
+                email,
+            showDatePicker = ::showDatePickerDialog
+            )
         }
 
         composable(
