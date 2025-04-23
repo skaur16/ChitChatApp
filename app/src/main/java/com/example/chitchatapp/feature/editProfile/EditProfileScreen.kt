@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -49,6 +52,7 @@ import com.example.chitchatapp.domain.models.Gender
 import com.example.chitchatapp.domain.models.User
 import com.example.chitchatapp.feature.editProfile.comp.AddImageButton
 import com.example.chitchatapp.feature.editProfile.comp.ProfileImage
+import com.example.chitchatapp.helper.visible
 import com.example.chitchatapp.ui.theme.Secondary
 import com.streamliners.compose.comp.select.RadioGroup
 import com.streamliners.compose.comp.textInput.TextInputLayout
@@ -85,6 +89,7 @@ fun EditProfileScreen(
     val gender = remember { mutableStateOf<Gender?>(null) }
     var genderError by remember { mutableStateOf(false) }
     var dob by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     LaunchedEffect(key1 = gender.value) {
@@ -263,12 +268,26 @@ fun EditProfileScreen(
                                 gender = it,
                                 dob = dob
                             )
+
+                            isLoading = true
                             Log.e("TAG2", "BEFORE CALL")
 
 
-                            viewModel.saveUser(user) {
+                            viewModel.saveUser(user,
+                                onSuccess =  {
+                                isLoading = false
+                                scope.launch{
+                                    snackbarHostState.showSnackbar("Registration successful !!")
+                                }
                                 navController.navigate(Screen.HOME.route)
-                            }
+                            },
+                                onError = {
+                                    isLoading = false
+                                    scope.launch{
+                                        snackbarHostState.showSnackbar(it)
+                                    }
+                                }
+                            )
                             Log.e("TAG3", "SAVE BUTTON")
 
 
@@ -277,10 +296,24 @@ fun EditProfileScreen(
                     if(gender.value == null){
                             genderError = true
                 }
-
-                }
+                },
+                enabled = !isLoading
             ) {
-                Text(text = "Save")
+                Box{
+
+                    Text(
+                        modifier = Modifier.visible(!isLoading),
+                        text = "Save",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+
+                    if(isLoading){
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.dp
+                        )
+                    }
+                }
             }
 
         }
