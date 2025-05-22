@@ -11,6 +11,8 @@ sealed class Screen(
 
     data object HOME : Screen("HOME")
 
+    data object NewChat : Screen("NewChat")
+
 
 
     class EDITPROFILE(

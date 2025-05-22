@@ -1,22 +1,18 @@
 package com.example.chitchatapp
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.chitchatapp.data.remote.UserRepo
 import com.example.chitchatapp.feature.editProfile.EditProfileScreen
 import com.example.chitchatapp.feature.home.HomeScreen
 import com.example.chitchatapp.feature.login.LoginScreen
-import com.example.chitchatapp.feature.login.LoginViewModel
+import com.example.chitchatapp.feature.newChat.NewChatScreen
 import com.example.chitchatapp.feature.splash.SplashScreen
-import com.example.chitchatapp.feature.splash.SplashViewModel
 import com.streamliners.pickers.date.showDatePickerDialog
 import org.koin.androidx.compose.koinViewModel
-import org.koin.androidx.viewmodel.factory.KoinViewModelFactory
 
 @Composable
 fun MainActivity.ChatAppNavHost() {
@@ -57,7 +53,13 @@ fun MainActivity.ChatAppNavHost() {
         composable(
             Screen.HOME.route
         ) {
-            HomeScreen()
+            HomeScreen(navController)
+        }
+
+        composable(
+            Screen.NewChat.route
+        ){
+            NewChatScreen(koinViewModel(), navController)
         }
     }
 

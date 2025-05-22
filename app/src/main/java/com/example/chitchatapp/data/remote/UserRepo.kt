@@ -26,4 +26,12 @@ class UserRepo {
                         .firstOrNull()
         }
 
+        suspend fun getAllUsers() : List<User>{
+                Firebase.firestore
+                        .usersColl()
+                        .get()
+                        .await()
+                        .toObjects(User::class.java)
+        }
+
 }
