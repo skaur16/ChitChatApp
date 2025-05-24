@@ -27,7 +27,7 @@ class UserRepo {
         }
 
         suspend fun getAllUsers() : List<User>{
-                Firebase.firestore
+                return Firebase.firestore
                         .usersColl()
                         .get()
                         .await()

@@ -15,3 +15,5 @@ val Primary = Color(0xFF150099)
 val Secondary = Color(0xFF6E008A)
 
 val Gradient = Brush.linearGradient(listOf(Primary, Secondary))
+
+val Neutral50 = Color(0xFF7B7579)
