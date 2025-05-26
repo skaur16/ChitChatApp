@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.chitchatapp.Screen
 
@@ -34,6 +35,12 @@ fun HomeScreen(navController: NavHostController) {
                     containerColor = Color.Red
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {navController.navigate(Screen.NewChat.route)} ) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add" )
+            }
         }
     )
     {
@@ -42,11 +49,11 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(it),
             contentAlignment = Alignment.Center
         ){
-            Text(text = "No Chats Found!")
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = "No Chats Found!")
 
-            FloatingActionButton(onClick = {navController.navigate(Screen.NewChat.route)} ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add" )
-            }
+
         }
     }
 
