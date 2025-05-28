@@ -20,5 +20,5 @@ val viewModelModule = module{
     viewModel { EditProfileViewModel(get(),get()) }
     viewModel { SplashViewModel(get())}
     viewModel { LoginViewModel(get(), get())}
-    viewModel { NewChatViewModel(get())}
+    viewModel { NewChatViewModel(get(),get())}
 }

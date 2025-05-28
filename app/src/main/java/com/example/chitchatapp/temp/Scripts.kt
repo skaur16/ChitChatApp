@@ -1,7 +1,11 @@
 package com.example.chitchatapp.temp
 
 import android.annotation.SuppressLint
+import android.util.Log
+import com.example.chitchatapp.data.remote.ChannelRepo
+import com.example.chitchatapp.data.remote.FirestoreCollections.channelsColl
 import com.example.chitchatapp.data.remote.FirestoreCollections.usersColl
+import com.example.chitchatapp.domain.models.Channel
 import com.example.chitchatapp.domain.models.Gender
 import com.example.chitchatapp.domain.models.User
 import com.google.firebase.Firebase
@@ -109,4 +113,29 @@ object Scripts {
         batch.commit().await()
     }
 
+    suspend fun saveDummyChannels(){
+
+       val channel = Channel(
+           imageUrl = null,
+           type = Channel.ChannelType.OneToOne,
+           name = "Dummy",
+           description = null,
+           members = listOf(
+               "yZII8iPpH1BYvIhjT8Fe", "yG8kZKCtZP0YzxWcVdKU"
+           ),
+           messages = emptyList()
+       )
+
+        Firebase.firestore.channelsColl()
+            .add(channel)
+            .await()
+    }
+
+    suspend fun ChannelQueryTest(){
+        val channel = ChannelRepo().getOneToOneChannel(
+            "yZII8iPpH1BYvIhjT8Fe",
+            "yG8kZKCtZP0YzxWcVdKU"
+        )
+        Log.i("CHANNEL", "ChannelQueryTest")
+    }
 }

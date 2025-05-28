@@ -26,7 +26,7 @@ class EditProfileViewModel @Inject constructor(
         }
         viewModelScope.launch (exceptionHandler){
             userRepo.saveUser(user)
-            localRepo.onLoggedIn()
+            localRepo.onLoggedIn(user)
             onSuccess()
         }
     }

@@ -22,7 +22,7 @@ class LoginViewModel @Inject constructor(
             val user = userRepo.getUserWithEmail(email)
             if(user != null){
                 //save data in local and navigate
-                localRepo.onLoggedIn()
+                localRepo.onLoggedIn(user)
                // navController.navigate(Screen.HOME.route)
                 navController.navigate(Screen.EDITPROFILE(email).route)
             }

@@ -10,19 +10,17 @@ import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
     private val localRepo: LocalRepo
-) : ViewModel(){
+) : ViewModel() {
 
-        fun checkLoginStatus(
-            navController: NavController
-        ){
-            viewModelScope.launch {
-                /*if(localRepo.isLoggedIn()){
-                    navController.navigate(Screen.HOME.route)
+    fun checkLoginStatus(
+        navController: NavController
+    ) {
+        viewModelScope.launch {
+            if (localRepo.isLoggedIn()) {
+                navController.navigate(Screen.HOME.route)
+            } else {
+                navController.navigate(Screen.LOGIN.route)
                 }
-                else{*/
-                    navController.navigate(Screen.LOGIN.route)
-               // }
             }
         }
-
 }
