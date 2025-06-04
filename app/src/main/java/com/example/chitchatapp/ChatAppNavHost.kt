@@ -1,11 +1,20 @@
 package com.example.chitchatapp
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.chitchatapp.feature.Chat.ChatScreen
 import com.example.chitchatapp.feature.editProfile.EditProfileScreen
 import com.example.chitchatapp.feature.home.HomeScreen
 import com.example.chitchatapp.feature.login.LoginScreen
@@ -61,6 +70,24 @@ fun MainActivity.ChatAppNavHost() {
         ){
             NewChatScreen(koinViewModel(), navController)
         }
+
+        composable(
+            Screen.Chat.format(),
+            arguments =  listOf(
+                navArgument("channelId"){
+                    type = NavType.StringType
+                }
+            )
+        ) {
+
+            val channelId = it.arguments?.getString("channelId")?: error("ChannelId not passed !")
+            ChatScreen(
+                channelId = channelId,
+                navController = navController
+            )
+
+        }
+
     }
 
 }

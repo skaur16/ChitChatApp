@@ -32,16 +32,12 @@ import com.example.chitchatapp.domain.models.User
 import com.example.chitchatapp.ui.theme.Neutral50
 
 @Composable
-fun UserCard(user : User) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 2.dp)
-            .background(
-                color = Color(0xFFE6E6FA), // Light lavender tint
-                shape = RoundedCornerShape(8.dp)
-            )
-            .clip(RoundedCornerShape(8.dp))
+fun UserCard(
+    user : User,
+    onClick: () -> Unit
+) {
+    Card (
+        onClick = onClick
     )
             {
 
@@ -86,6 +82,7 @@ fun UserPreview() {
             dob = "16",
             bio = "Hellop",
             gender = Gender.Female
-        )
+        ),
+        onClick = {}
     )
 }

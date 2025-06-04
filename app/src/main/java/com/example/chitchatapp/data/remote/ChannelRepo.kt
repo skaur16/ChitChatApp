@@ -21,7 +21,34 @@ class ChannelRepo {
             .await()
             .toObjects(Channel::class.java)
             .firstOrNull {
-                it.members == listOf(currentUserId, otherUserId)
+                it.members == listOf(currentUserId, otherUserId) ||
+                        it.members == listOf(otherUserId, currentUserId)
             }
+    }
+
+    suspend fun createOneToOneChannel(
+        currentUserId: String,
+        otherUserId: String
+    ) : String{
+
+        val collRef = Firebase.firestore.channelsColl()
+        val id = collRef.document().id
+
+        collRef
+            .document(id)
+            .set(Channel(
+                    imageUrl = null,
+                    type = Channel.ChannelType.OneToOne,
+                    name = "OneToOne",
+                    description = null,
+                    members = listOf(
+                        currentUserId,
+                        otherUserId
+                    ),
+                    messages = emptyList()
+                )
+            ).await()
+
+        return id
     }
 }

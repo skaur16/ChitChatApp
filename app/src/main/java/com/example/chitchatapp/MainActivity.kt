@@ -22,14 +22,14 @@ class MainActivity : BaseActivity() {
 
             }
         }
-      //  runScripts()
+        runScripts()
     }
 
     private fun runScripts(){
         lifecycleScope.launch{
-            //Scripts.saveDummyChannels()
-            //Scripts.ChannelQueryTest()
-           // Scripts.saveDummyUsers()
+            Scripts.saveDummyChannels()
+            Scripts.ChannelQueryTest()
+            Scripts.saveDummyUsers()
         }
     }
 }

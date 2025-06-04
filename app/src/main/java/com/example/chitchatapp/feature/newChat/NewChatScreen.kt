@@ -1,6 +1,7 @@
 package com.example.chitchatapp.feature.newChat
 
 import android.graphics.drawable.Icon
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.chitchatapp.Screen
+import com.example.chitchatapp.domain.ext.id
 import com.example.chitchatapp.ui.comp.UserCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,8 +60,19 @@ fun NewChatScreen(
             contentPadding = PaddingValues(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ){
-            items(users){
-                UserCard(it)
+            items(users){user->
+                UserCard(
+                    user = user,
+                    onClick = {
+                        Log.e("NewChat", "I am onClick")
+                        viewModel.onUserSelected(
+                            otherUserId = user.id(),
+                            onChannelReady = {
+                                navController.navigate(Screen.Chat(it).route)
+                            }
+                        )
+                    }
+                    )
             }
         }
     }
