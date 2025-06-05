@@ -51,4 +51,14 @@ class ChannelRepo {
 
         return id
     }
+
+    suspend fun getAllChannelsOf(userId : String) : List<Channel>{
+        return Firebase.firestore
+            .channelsColl()
+            .whereEqualTo(Channel::type.name, Channel.ChannelType.OneToOne)
+            .whereArrayContains(Channel::members.name, userId)
+            .get()
+            .await()
+            .toObjects(Channel::class.java)
+    }
 }

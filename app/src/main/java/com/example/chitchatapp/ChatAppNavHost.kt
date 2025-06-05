@@ -62,7 +62,7 @@ fun MainActivity.ChatAppNavHost() {
         composable(
             Screen.HOME.route
         ) {
-            HomeScreen(navController)
+            HomeScreen(navController, koinViewModel())
         }
 
         composable(

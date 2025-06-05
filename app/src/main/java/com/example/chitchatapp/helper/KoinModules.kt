@@ -4,6 +4,7 @@ import com.example.chitchatapp.data.LocalRepo
 import com.example.chitchatapp.data.remote.ChannelRepo
 import com.example.chitchatapp.data.remote.UserRepo
 import com.example.chitchatapp.feature.editProfile.EditProfileViewModel
+import com.example.chitchatapp.feature.home.HomeViewModel
 import com.example.chitchatapp.feature.login.LoginViewModel
 import com.example.chitchatapp.feature.newChat.NewChatViewModel
 import com.example.chitchatapp.feature.splash.SplashViewModel
@@ -23,4 +24,5 @@ val viewModelModule = module{
     viewModel { SplashViewModel(get())}
     viewModel { LoginViewModel(get(), get())}
     viewModel { NewChatViewModel(get(),get(), get())}
+    viewModel { HomeViewModel(get(),get()) }
 }
