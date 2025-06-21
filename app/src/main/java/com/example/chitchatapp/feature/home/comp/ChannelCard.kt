@@ -50,7 +50,9 @@ fun ChannelCard(channel : Channel,
                     .background(Color.LightGray)
                     .padding(8.dp)
             )
-            Column() {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(
                     text = channel.name,
                     style = MaterialTheme.typography.titleLarge,

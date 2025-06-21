@@ -26,6 +26,7 @@ class EditProfileViewModel @Inject constructor(
         }
         viewModelScope.launch (exceptionHandler){
             userRepo.saveUser(user)
+            //TODO : onLoggedIn should be executed when saveUser is successful and with its data, it should save the user in local
             localRepo.onLoggedIn(user)
             onSuccess()
         }

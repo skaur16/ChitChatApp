@@ -1,5 +1,6 @@
 package com.example.chitchatapp.feature.newChat
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
@@ -42,15 +43,19 @@ class NewChatViewModel(
         viewModelScope.launch {
 
             val currentUserId = localRepo.getLoggedInUser().id()
+            Log.e("CurrentUserId", currentUserId)
+            Log.e("UserCheck", localRepo.getLoggedInUser().toString())
             val channel = channelRepo.getOneToOneChannel(currentUserId, otherUserId)
             val channelId = if(channel != null){
                 channel.id()
+                Log.e("ChannelExists", "True")
             }
             else{
                 channelRepo.createOneToOneChannel(currentUserId, otherUserId)
+                Log.e("ChannelCreate", "True")
             }
-
-            onChannelReady(channelId)
+            Log.e("ChanelId", channelId.toString())
+            onChannelReady(channelId.toString())
 
 
         }

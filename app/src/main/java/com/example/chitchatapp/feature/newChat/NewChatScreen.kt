@@ -64,7 +64,8 @@ fun NewChatScreen(
                 UserCard(
                     user = user,
                     onClick = {
-                        Log.e("NewChat", "I am onClick")
+                        Log.e("NewChat", "I am NewChatOnClick")
+                        Log.e("UserID", user.id())
                         viewModel.onUserSelected(
                             otherUserId = user.id(),
                             onChannelReady = {
