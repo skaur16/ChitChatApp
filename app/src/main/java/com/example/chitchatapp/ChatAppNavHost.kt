@@ -83,7 +83,8 @@ fun MainActivity.ChatAppNavHost() {
             val channelId = it.arguments?.getString("channelId")?: error("ChannelId not passed !")
             ChatScreen(
                 channelId = channelId,
-                navController = navController
+                navController = navController,
+                viewModel = koinViewModel()
             )
 
         }

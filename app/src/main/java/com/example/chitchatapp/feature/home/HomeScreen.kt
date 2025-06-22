@@ -65,7 +65,7 @@ fun HomeScreen(navController: NavHostController,
             contentPadding = PaddingValues(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ){
-            if(viewModel.channels.value.isEmpty()){
+            if(viewModel.channelState.value.isEmpty()){
                 item {
                     Box (
                         modifier = Modifier.fillMaxSize(),
@@ -76,7 +76,7 @@ fun HomeScreen(navController: NavHostController,
                 }
             }
             else{
-                items(viewModel.channels.value){channel->
+                items(viewModel.channelState.value){channel->
                     ChannelCard(channel,
                         onClick = {
                             navController.navigate(
