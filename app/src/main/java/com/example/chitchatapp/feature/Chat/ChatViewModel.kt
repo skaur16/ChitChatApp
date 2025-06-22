@@ -39,7 +39,10 @@ class ChatViewModel(
 
      }
 
-    fun sendMessage(messageStr : String) {
+    fun sendMessage(
+        messageStr : String,
+        onSuccess : () -> Unit
+                    ) {
 
         val message = Message(
             time = Timestamp.now(),
@@ -49,7 +52,10 @@ class ChatViewModel(
 
         )
         viewModelScope.launch{
-            channel.value?.let { channelRepo.sendMessages(it.id(), message) }
+            channel.value?.let {
+                channelRepo.sendMessages(it.id(), message)
+                onSuccess()
+            }
         }
     }
 }

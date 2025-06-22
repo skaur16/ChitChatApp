@@ -56,7 +56,7 @@ fun ChatScreen(
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(it).padding(16.dp)
+            modifier = Modifier.fillMaxSize().padding(it)
         ) {
             Column (
                 modifier = Modifier.weight(1f)
@@ -69,7 +69,9 @@ fun ChatScreen(
             }
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp),
                 value = viewModel.messageInput.value,
                 onValueChange = {
                     viewModel.messageInput.value = it
@@ -77,8 +79,10 @@ fun ChatScreen(
                 placeholder = {Text(text = "Message")},
                 trailingIcon = {
                     IconButton(onClick = {
-                       viewModel.sendMessage(viewModel.messageInput.value)
-                        viewModel.messageInput.value = ""
+                       viewModel.sendMessage(viewModel.messageInput.value){
+
+                           viewModel.messageInput.value = ""
+                       }
                     }) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.Send,
                             contentDescription = "SendMsg" )
