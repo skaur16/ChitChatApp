@@ -13,6 +13,7 @@ import com.streamliners.base.BaseViewModel
 import com.streamliners.base.ext.execute
 import com.streamliners.base.taskState.taskStateOf
 import com.streamliners.base.taskState.update
+import com.streamliners.base.taskState.value
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
@@ -20,7 +21,15 @@ class ChatViewModel(
     private val localRepo : LocalRepo
 ) : BaseViewModel() {
 
-    val channel = mutableStateOf<Channel?>(null)
+    class Data(
+        val channel : Channel,
+        val user : User
+    )
+
+    val data = taskStateOf<Data>()
+
+    //val channel = mutableStateOf<Channel?>(null)
+    val channel = taskStateOf<Channel>()
     val messageInput = mutableStateOf("")
     lateinit var user : User
 
@@ -31,13 +40,18 @@ class ChatViewModel(
             user = localRepo.getLoggedInUser()
             launch{
                 channelRepo.subscribeToChannel(channelId).collect{
-                    channel.value = channelRepo.getChannel(channelId)
+                   /* channel.value = channelRepo.getChannel(channelId)*/
+                    data.update(
+                        Data(channelRepo.getChannel(channelId), user = user)
+                    )
+                    }
                 }
             }
 
         }
 
-     }
+
+
 
     fun sendMessage(
         messageStr : String,
@@ -48,12 +62,12 @@ class ChatViewModel(
             time = Timestamp.now(),
             message = messageStr,
             mediaUrl = null,
-            sender = user.id()
+            sender = data.value().user.id()
 
         )
         viewModelScope.launch{
             channel.value?.let {
-                channelRepo.sendMessages(it.id(), message)
+                channelRepo.sendMessages(data.value().channel.id(), message)
                 onSuccess()
             }
         }

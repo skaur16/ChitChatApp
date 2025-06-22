@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.chitchatapp.domain.models.Message
 import com.example.chitchatapp.feature.Chat.comp.MessagesList
+import com.streamliners.base.taskState.comp.whenLoaded
 import com.streamliners.base.taskState.taskStateOf
 import com.streamliners.compose.comp.textInput.TextInputLayout
 import com.streamliners.compose.comp.textInput.state.TextInputState
@@ -62,8 +63,8 @@ fun ChatScreen(
                 modifier = Modifier.weight(1f)
             ){
 
-                if(viewModel.channel.value != null){
-                    MessagesList(viewModel.channel.value!!)
+                viewModel.data.whenLoaded{data->
+                    MessagesList(data)
                 }
 
             }
